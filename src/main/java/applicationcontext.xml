@@ -14,5 +14,10 @@
         <property name="name" value="Spring"></property>
 
     </bean>
+    
+    <bean id="person" class="com.lora.testspring.Person">
+        <property name="name" value="xingoo"/>
+        <property name="age" value="12"/>
+    </bean>
 
 </beans>
