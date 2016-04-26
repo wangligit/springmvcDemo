@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.ctrip.cc</groupId>
+	<groupId>com.lora</groupId>
 	<artifactId>test</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
@@ -20,6 +20,13 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 			<version>4.2.4.RELEASE</version>
+		</dependency>
+		
+		<!-- 事务传播 -->
+		<dependency>
+		    <groupId>org.aspectj</groupId>
+		    <artifactId>aspectjweaver</artifactId>
+		    <version>1.8.2</version>
 		</dependency>
 
 		<!-- jstl标签 -->
@@ -54,12 +61,19 @@
 		    <version>3.0.1</version>
 		</dependency>
 
-		<!-- shiro -->
+		<!-- shiro start-->
 		<dependency>
 		  <groupId>org.apache.shiro</groupId>
 		  <artifactId>shiro-core</artifactId>
 		  <version>1.2.4</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-spring</artifactId>
+			<version>1.2.3</version>
+		</dependency>
+		<!-- shiro end -->
 		
 		<dependency>
             <groupId>org.slf4j</groupId>
@@ -68,21 +82,35 @@
             <scope>test</scope>
         </dependency>
         
+        <!-- proxool -->
+       <!--  <dependency>  
+            <groupId>proxool</groupId>
+            <artifactId>proxool</artifactId>
+            <version>0.9.1</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>proxool</groupId>
+            <artifactId>proxool-cglib</artifactId>
+            <version>0.9.1</version>
+        </dependency> -->
 
 
+		<!-- CAT -->
+		<dependency>
+    		<groupId>com.dianping.cat</groupId>
+    		<artifactId>cat-client</artifactId>
+   			<version>1.4.1</version>
+		</dependency>
 
-
-
-
-
-
-
-
-
-
+        <!-- ElastaticSearch Spring -->
+        <dependency>
+    		<groupId>org.springframework.data</groupId>
+    		<artifactId>spring-data-elasticsearch</artifactId>
+    		<version>1.2.0.RELEASE</version>
+		</dependency>
 
 	</dependencies>
-
 
 
 	<build>

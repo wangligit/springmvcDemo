@@ -12,14 +12,14 @@
         http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
-	<context:property-placeholder location="classpath:../conf/jdbc.properties" />
+	<context:property-placeholder location="/WEB-INF/conf/jdbc.properties" />
+	
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName" value="${driverClassName}" />
-		<property name="url" value="${url}" />
-		<property name="username" value="${username}" />
-		<property name="password" value="${password}" />
-		
+		<property name="driverClassName" value="${db.driverClassName}" />
+		<property name="url" value="${db.url}" />
+		<property name="username" value="${db.username}" />
+		<property name="password" value="${db.password}" />
 		<!-- 连接池启动时的初始值 -->
 		<!-- <property name="initialSize" value="${initialSize}" /> -->
 		<!-- 连接池的最大值 -->
@@ -36,6 +36,7 @@
 		</property>
 	</bean>
 
+	<!-- 定义事务管理器（声明式的事务） -->    
 	<bean id="txManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
@@ -43,9 +44,11 @@
 
 	<!-- 定义事务传播属性 -->
 	<aop:config>
-		<aop:pointcut id="transactionPointCut" expression="execution(* com.lora.service..*.*(..))" />
-		<aop:advisor pointcut-ref="transactionPointCut"
-			advice-ref="txAdvice" />
+		<aop:pointcut id="transactionPointCut" 
+			expression="execution(* com.lora.service..*.*(..))" />
+		
+		<aop:advisor advice-ref="txAdvice" 
+			 pointcut-ref="transactionPointCut" />
 	</aop:config>
 	
 	<tx:advice id="txAdvice" transaction-manager="txManager">
@@ -55,9 +58,5 @@
 			<tx:method name="*" propagation="REQUIRED" />
 		</tx:attributes>
 	</tx:advice>
-
-
-
-	<!-- <tx:annotation-driven transaction-manager="txManager" /> -->
 
 </beans>
