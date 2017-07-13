@@ -8,7 +8,8 @@
 
     <description>Shiro 配置</description>
 
- <!--    <bean id="casFilter" class="com.ctrip.cc.selfservice.shiro.filter.ShiroCasFilter">
+	<!-- CasFilter为自定义的单点登录Fileter -->
+<!--     <bean id="casFilter" class="com.lora.shiro.filter.ShiroCasFilter">
         配置验证错误时的失败页面 
         <property name="failureUrl" value="/static/no-permission.jsp"/>
     </bean> -->
@@ -23,12 +24,12 @@
         <property name="unauthorizedUrl" value="/static/no-permission.jsp"/>
         <property name="filters">
             <util:map>
-              <!--   <entry key="casFilter" value-ref="casFilter"/>
-				<entry key="authc">
+            	<!-- 添加casFilter到shiroFilter整合 -->
+                <!-- <entry key="casFilter" value-ref="casFilter"/> -->
+               <!--  <entry key="perms">
 					<bean
-						class="com.ctrip.cc.selfservice.shiro.filter.MyFormAuthenticationFilter">
-					</bean>
-				</entry> -->
+						class="com.lora.shiro.filter.MyPermissionsAuthorizationFilter" />
+				</entry>  -->
             </util:map>
         </property>
 
@@ -36,33 +37,32 @@
         <property name="filterChainDefinitions">
             <value>
             	<!-- /shiro-cas = casFilter -->
-            	/addUser/** = anon
+            	/addUser/** = authc
                 /login = anon
+                /toLogin/login = anon
                 /static/** = anon
                 /static/no-permission.jsp = anon
+                /greeting** = authc,perms[admin:create]
                 /** = authc
 				<!-- /home* = roles["adminHome"] -->
             </value>
         </property>
     </bean>
     
-    <!-- 继承自AuthorizingRealm的自定义Realm,即指定Shiro验证用户登录的类为自定义的myRealm.java -->  
-     <bean id="myRealm" class="com.lora.shiro.myRealm">
-    </bean>
+     <!-- 继承自AuthorizingRealm的自定义Realm,即指定Shiro验证用户登录的类为自定义的myRealm.java --> 
+     <!--没有单点登录下的配置： -->  
+     <bean id="myRealm" class="com.lora.shiro.myRealm"> </bean>
 
 	<!-- 这里主要是设置自定义的单Realm应用,若有多个Realm,可使用'realms'属性代替 -->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
        <!--  设置自定义realm  ref="iniRealm,mySecurityRealm" -->
-       <!--  <property name="realms">
-            <set>
-                <ref bean="casRealm"/>
-            </set>
-        </property> -->
         <property name="realm" ref="myRealm"/>
     </bean>
     
-    
-<!--
+    <!--保证实现了Shiro内部lifecycle函数的bean执行 -->
+ 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>  
+
+	<!-- 相当于调用SecurityUtils.setSecurityManager(securityManager) -->
 	<bean
 		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
 		<property name="staticMethod"
@@ -70,10 +70,13 @@
 		<property name="arguments" ref="securityManager" />
 	</bean>
 
+ 	<!-- 用于开启 Shiro Spring AOP 权限注解的支持 -->
 	<bean
 		class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
 		<property name="securityManager" ref="securityManager" />
-	</bean> -->
+	</bean>
+	
+
 	    
 </beans>  
 

@@ -16,6 +16,6 @@ public class HelloController {
 	         System.out.println("Hello " + name);
 	         Map<String, Object> map = new HashMap<String, Object>();
 	         map.put("userName", name);
-	         return new ModelAndView("/hello",map);
+	         return new ModelAndView("hello",map);
 	    }
 }

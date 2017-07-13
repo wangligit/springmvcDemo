@@ -28,6 +28,7 @@ public class myRealm extends AuthorizingRealm {
 			simpleAuthorInfo.addRole("admin");
 			// 添加权限
 			simpleAuthorInfo.addStringPermission("admin:manage");
+//			simpleAuthorInfo.addStringPermission("admin:create");
 			System.out.println("已为用户[lora]赋予了[admin]角色和[admin:manage]权限");
 			return simpleAuthorInfo;
 		}
@@ -43,13 +44,14 @@ public class myRealm extends AuthorizingRealm {
 			AuthenticationToken authcToken) throws AuthenticationException {
 		UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
 		String userName = token.getUsername();
+		String password = new String(token.getPassword());
 		//此处无需比对,比对的逻辑Shiro会做,我们只需返回一个和令牌相关的正确的验证信息  
         //说白了就是第一个参数填登录用户名,第二个参数填合法的登录密码(可以是从数据库中取到的,本例中为了演示就硬编码了) 
-		if ("lora".equals(token.getUsername())) {
-			AuthenticationInfo authcInfo = new SimpleAuthenticationInfo("lora", "lora", this.getName());  
+		if ("lora".equals(userName) && "lora".equals(password)) {
+			AuthenticationInfo authcInfo = new SimpleAuthenticationInfo(userName, password, this.getName());  
 			// 将用户保存在SESSION回话中
 			Session session = SecurityUtils.getSubject().getSession();
-			session.setAttribute("currentUser", "lora");
+			session.setAttribute("currentUser", authcInfo);
             return authcInfo;  
 		}
 		return null;

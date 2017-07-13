@@ -75,6 +75,13 @@
 		</dependency>
 		<!-- shiro end -->
 		
+		<!-- cas -->
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-cas</artifactId>
+			<version>1.2.3</version>
+		</dependency>
+		
 		<dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
