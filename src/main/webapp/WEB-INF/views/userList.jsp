@@ -8,6 +8,15 @@
 <title>Hello</title>
 </head>
 <body>
-    你好，${currentUser.uname }
+  <table border="1" style="border-collapse:collapse;width:50%;height: 34px;text-align: center;" >
+	  <c:forEach items="${userList}" var="user">
+	  	  <tr>
+	  	  	  <td>${user.id}</td>
+			  <td>${user.uname}</td>
+			  <td>${user.pwd}</td>
+		  </tr>
+	  
+	  </c:forEach>
+  </table>
 </body>
 </html>

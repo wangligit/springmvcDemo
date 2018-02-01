@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -19,10 +20,13 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 
 public class LoginController {
+    
+    private Logger log = Logger.getLogger(this.getClass());
 
 	@RequestMapping("/login")
-    public ModelAndView greeting() {
+    public ModelAndView greeting(HttpServletRequest request) {
          Map<String, Object> map = new HashMap<String, Object>();
+         log.info(request.getRequestURL() + "-----" + request.getRequestURI());
          return new ModelAndView("login",map);
     }
 	 

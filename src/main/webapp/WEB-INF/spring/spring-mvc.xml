@@ -11,6 +11,12 @@
      
     <mvc:annotation-driven></mvc:annotation-driven>
      
+    <!-- Maps '/' requests to the 'home' view -->
+    <mvc:view-controller path="/" view-name="redirect:/"/>
+
+    <!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources/ directory -->
+    <mvc:resources mapping="/static/**" location="/static/"/> 
+    
     <bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
         <property name="viewClass"
             value="org.springframework.web.servlet.view.JstlView" />

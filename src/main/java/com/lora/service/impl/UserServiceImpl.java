@@ -1,5 +1,7 @@
 package com.lora.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -14,10 +16,14 @@ public class UserServiceImpl implements IUserService {
 	@Resource(name="userDAO")
 	private IUserDAO userDao;
 	
-	@Override
 	public void addUser(User user) {
 		
 		userDao.addUser(user);
 	}
+
+    public List<User> findAll() {
+        
+        return userDao.findAll();
+    }
 
 }

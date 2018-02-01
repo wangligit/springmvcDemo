@@ -18,4 +18,9 @@ public class HelloController {
 	         map.put("userName", name);
 	         return new ModelAndView("hello",map);
 	    }
+	 
+	   @RequestMapping("/index")
+       public String index() {
+            return "index";
+       }
 }

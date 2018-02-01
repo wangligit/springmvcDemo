@@ -1,4 +1,4 @@
-package com.lora.dao;
+/*package com.lora.dao;
 
 import java.util.List;
 
@@ -61,3 +61,4 @@ public class StudentJDBCTemplate implements StudentDAO {
 	}
 
 }
+*/
