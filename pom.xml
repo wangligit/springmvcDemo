@@ -54,6 +54,15 @@
 			<version>5.1.30</version>
 		</dependency>
 		
+		<!-- sqlserver -->
+		<dependency>
+			<groupId>com.ctrip</groupId>
+			<artifactId>sqljdbc4</artifactId>
+			<version>1.0.0</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		
 		<!-- servlet -->
 		<dependency>
 		    <groupId>javax.servlet</groupId>
@@ -90,17 +99,17 @@
         </dependency>
         
         <!-- proxool -->
-       <!--  <dependency>  
-            <groupId>proxool</groupId>
-            <artifactId>proxool</artifactId>
-            <version>0.9.1</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>proxool</groupId>
-            <artifactId>proxool-cglib</artifactId>
-            <version>0.9.1</version>
-        </dependency> -->
+       	<dependency>
+			<groupId>org.logicalcobwebs</groupId>
+			<artifactId>proxoolListenerLoad</artifactId>
+			<version>0.9.0</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.logicalcobwebs</groupId>
+			<artifactId>proxool</artifactId>
+			<version>0.9.0RC3</version>
+		</dependency>
 
 
 		<!-- CAT -->

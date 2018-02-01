@@ -3,6 +3,7 @@ package com.lora.dao.impl;
 import java.sql.Types;
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,16 +14,8 @@ import com.lora.model.PersonBean;
 
 public class PersonDaoImpl implements PersonDao {
 
+    @Resource(name = "jdbcTemplate")
     private JdbcTemplate jdbcTemplate; 
-    
-    /**
-     * 通过Spring容器注入datasource
-     * 实例化JdbcTemplate,该类为主要操作数据库的类
-     * @param ds
-     */ 
-    public void setDataSource(DataSource datasource) { 
-        this.jdbcTemplate = new JdbcTemplate(datasource); 
-    } 
       
     public void addPerson(PersonBean person) { 
         /**

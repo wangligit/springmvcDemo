@@ -9,23 +9,28 @@
     <description>Shiro 配置</description>
 
 	<!-- CasFilter为自定义的单点登录Fileter -->
-<!--     <bean id="casFilter" class="com.lora.shiro.filter.ShiroCasFilter">
-        配置验证错误时的失败页面 
+   <bean id="casFilter" class="org.apache.shiro.cas.CasFilter">
+        <!--  配置验证错误时的失败页面 -->
         <property name="failureUrl" value="/static/no-permission.jsp"/>
-    </bean> -->
+    </bean> 
     
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
     	<!-- Shiro的核心安全接口,这个属性是必须的 -->  
         <property name="securityManager" ref="securityManager"/>
         <!-- 要求登录时的链接(可根据项目的URL进行替换),非必须的属性,默认会自动寻找Web工程根目录下的"/login.jsp"页面 --> 
-        <property name="loginUrl" value="/login"/>
+        <!-- <property name="loginUrl" value="/login"/> -->
+        <property name="loginUrl" value="http://cas.uat.qa.nt.ctripcorp.com/caso/login?service=http://127.0.0.1:8080/springdemo/shiro-cas"/>
         <property name="successUrl" value="/"/>
         <!-- 用户访问未对其授权的资源时,所显示的连接 -->
         <property name="unauthorizedUrl" value="/static/no-permission.jsp"/>
+        
+        <!-- The 'filters' property is usually not necessary unless performing 
+			an override, which we want to do here (make authc point to a PassthruAuthenticationFilter 
+			instead of the default FormAuthenticationFilter: -->
         <property name="filters">
             <util:map>
             	<!-- 添加casFilter到shiroFilter整合 -->
-                <!-- <entry key="casFilter" value-ref="casFilter"/> -->
+                <entry key="casFilter" value-ref="casFilter"/>
                <!--  <entry key="perms">
 					<bean
 						class="com.lora.shiro.filter.MyPermissionsAuthorizationFilter" />
@@ -36,14 +41,17 @@
         <!-- 读取自定义权限内容-->
         <property name="filterChainDefinitions">
             <value>
-            	<!-- /shiro-cas = casFilter -->
+            	/shiro-cas = casFilter
             	/addUser/** = authc
+            	/show/** = authc
                 /login = anon
                 /toLogin/login = anon
                 /static/** = anon
                 /static/no-permission.jsp = anon
-                /greeting** = authc,perms[admin:create]
-                /** = authc
+                <!-- /greeting** = authc,perms[admin:create] -->
+                /greeting** = authc,perms[admin:manage]
+               <!--  /** = authc -->
+               /** = anon
 				<!-- /home* = roles["adminHome"] -->
             </value>
         </property>
@@ -51,12 +59,23 @@
     
      <!-- 继承自AuthorizingRealm的自定义Realm,即指定Shiro验证用户登录的类为自定义的myRealm.java --> 
      <!--没有单点登录下的配置： -->  
-     <bean id="myRealm" class="com.lora.shiro.myRealm"> </bean>
+     <!-- <bean id="myRealm" class="com.lora.shiro.myRealm"></bean> -->
+     
+     <!-- 单点登录下的配置 -->
+     <bean id="casRealm" class="com.lora.shiro.MyCasRealm">
+        <property name="defaultRoles" value="ROLE_USER"/>
+        <!-- cas服务端地址前缀 -->
+        <property name="casServerUrlPrefix" value="http://cas.uat.qa.nt.ctripcorp.com/caso" />
+        <!-- 应用服务地址，用来接收cas服务端票据 -->
+        <!-- 客户端的回调地址设置，必须和上面的shiro-cas过滤器casFilter拦截的地址一致 -->
+        <property name="casService" value="http://127.0.0.1:8080/springdemo/shiro-cas" />
+    </bean>
 
 	<!-- 这里主要是设置自定义的单Realm应用,若有多个Realm,可使用'realms'属性代替 -->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
        <!--  设置自定义realm  ref="iniRealm,mySecurityRealm" -->
-        <property name="realm" ref="myRealm"/>
+        <!-- <property name="realm" ref="myRealm"/> -->
+         <property name="realm" ref="casRealm"/>
     </bean>
     
     <!--保证实现了Shiro内部lifecycle函数的bean执行 -->
